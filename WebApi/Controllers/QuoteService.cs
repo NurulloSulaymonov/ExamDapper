@@ -40,7 +40,7 @@ public class QuoteController
     }
     
     
-    [HttpPost("UpdateQuote")]
+    [HttpPut("UpdateQuote")]
     public int UpdateQuote(QuoteDto quoteDto)
     {
         return _quoteService.UpdateQuotes(quoteDto);
