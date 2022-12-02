@@ -1,4 +1,5 @@
 using Domain.Dtos;
+using Domain.Wrapper;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,19 +10,19 @@ namespace WebApi.Controllers;
 public class CategoryController
 {
     private CategoryService _categoryService;
-    public CategoryController()
+    public CategoryController(CategoryService categoryService)
     {
-        _categoryService = new CategoryService();
+        _categoryService = categoryService;
     }
-
+    
 
     [HttpGet("GetCategory")]
-    public List<CategoryDto> GetCategories()=> _categoryService.GetCategories();
+    public async Task<Response<List<CategoryDto>>> GetCategories()=> await _categoryService.GetCategories();
 
     [HttpPost("AddCategory")]
-    public int AddCategory(CategoryDto categoryDto)
+    public async Task<Response<CategoryDto>> AddCategory(CategoryDto categoryDto)
     {
-        return _categoryService.AddCategory(categoryDto);
+        return await _categoryService.AddCategory(categoryDto);
     } 
     
 }

@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http;
+
 namespace Domain.Dtos;
 
 public class QuoteDto
@@ -6,4 +8,5 @@ public class QuoteDto
     public string Author { get; set; }
     public string QuoteText { get; set; }
     public int CategoryId { get; set; }
+    public IFormFile Photo { get; set; }
 }

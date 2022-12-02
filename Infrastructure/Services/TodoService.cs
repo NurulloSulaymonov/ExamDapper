@@ -1,17 +1,27 @@
 using Dapper;
 using Domain.Dtos;
+using Domain.Wrapper;
+using Infrastructure.Context;
+using Microsoft.AspNetCore.Hosting;
 using Npgsql;
 
 namespace Infrastructure.Services;
 
 public class TodoService
 {
-    
-    private string _connectionString = "Server=127.0.0.1;Port=5432;Database=dapper_demo;User Id=postgres;Password=12345;";
+    private readonly DapperContext _context;
+    private readonly IWebHostEnvironment _hosting;
+
+    public TodoService(DapperContext context,IWebHostEnvironment hosting)
+    {
+        _context = context;
+        _hosting = hosting;
+    }
+     
 
     public List<GetTodoDto> GetTodos()
     {
-        using (var connection = new NpgsqlConnection(_connectionString))
+        using (var connection = _context.CreateConnection())
         {
             
             var todos = connection.Query<GetTodoDto>("SELECT *  FROM Todos").ToList();
@@ -19,12 +29,26 @@ public class TodoService
         }
     }
     
-    public int AddTodo(AddTodoDto todo)
+    public async Task<Response<GetTodoDto>> AddTodo(AddTodoDto todo)
     {
-        using (var connection = new NpgsqlConnection(_connectionString))
+        using (var connection = _context.CreateConnection())
         {
-            var affectedRows = connection.Execute($"INSERT INTO Todos (Title, Status) VALUES ('{todo.Title}',{(int)todo.Status})");
-            return affectedRows;
+            var path = Path.Combine(_hosting.WebRootPath, "todoimages",todo.File.FileName);
+            
+            using (var stream = File.Create(path))
+            {
+                await todo.File.CopyToAsync(stream);
+            }
+            var insertedId = await connection.ExecuteScalarAsync<int>($"INSERT INTO Todos (Title, Status,filename) VALUES ('{todo.Title}',{(int)todo.Status},'{todo.File.FileName}') returning id");
+            todo.Id = insertedId;
+            var response = new GetTodoDto()
+            {
+                Id = todo.Id,
+                Title = todo.Title,
+                FileName = todo.File.FileName,
+                Status = todo.Status
+            };
+            return new Response<GetTodoDto>(response);
         }
     }
 }

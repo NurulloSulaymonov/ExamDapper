@@ -1,4 +1,5 @@
 using Domain.Dtos;
+using Domain.Wrapper;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,11 @@ namespace WebApi.Controllers;
 public class TodoController
 {
     private TodoService _todoService;
-    public TodoController()
+    public TodoController(TodoService todoService)
     {
-        _todoService = new TodoService();
+        _todoService = todoService;
     }
+    
     
     [HttpGet]
     public List<GetTodoDto> Get()
@@ -20,8 +22,8 @@ public class TodoController
         return _todoService.GetTodos();
     }
     [HttpPost]
-    public int Add(AddTodoDto todo)
+    public async Task<Response<GetTodoDto>> Add([FromForm] AddTodoDto todo)
     {
-        return _todoService.AddTodo(todo);
+        return await _todoService.AddTodo(todo);
     }
 }
