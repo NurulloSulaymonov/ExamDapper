@@ -9,9 +9,21 @@
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\images\Beige Minimalist Mood Photo Collage (Instagram Post (Square)).png" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\lk2.png" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\photo_2022-11-28_10-17-10.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\photo_2022-11-28_10-17-30.jpg" />
+    <_ContentIncludedByDefault Remove="wwwroot\images\photo_2022-11-28_10-17-38.jpg" />
   </ItemGroup>
 
 </Project>
