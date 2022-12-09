@@ -1,3 +1,4 @@
+using Domain.Dtos;
 using Domain.Entities;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +17,13 @@ public class TodoController
     }
     
     [HttpGet]
-    public async Task<List<Todo>> Get()
+    public async Task<List<GetTodoDto>> Get()
     {
         return  await _todoService.GetTodos();
     }
     
     [HttpPost]
-    public async Task<Todo> Post(Todo todo)
+    public async Task<AddTodoDto> Post(AddTodoDto todo)
     {
         return await _todoService.Add(todo);
     }

@@ -4,6 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<TodoService>();
+builder.Services.AddScoped<TodoListService>();
+builder.Services.AddSingleton<SingletonsService>();
+builder.Services.AddScoped<ScopedService>();
+builder.Services.AddTransient<TransientService>();
 // Add services to the container.
 var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<DataContext>(op => op.UseNpgsql(connection));

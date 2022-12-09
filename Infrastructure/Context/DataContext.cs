@@ -9,6 +9,8 @@ public class DataContext:DbContext
     {
         
     }
-    
+
     public DbSet<Todo> Todos { get; set; }
+    public DbSet<TodoList> TodoLists { get; set; }
+    public DbSet<TodoListImage> TodoListImages { get; set; }
 }
